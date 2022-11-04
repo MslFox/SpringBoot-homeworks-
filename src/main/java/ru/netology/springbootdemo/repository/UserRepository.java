@@ -1,21 +1,19 @@
 package ru.netology.springbootdemo.repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import ru.netology.springbootdemo.model.User;
+
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserRepository {
-    private final HashMap<String, List<Authorities>> repository;
+    private final ConcurrentHashMap<User, List<Authorities>> repository = new ConcurrentHashMap<>();
 
     public UserRepository() {
-        repository = new HashMap<>();
-        repository.put("11", new ArrayList<>());
-        repository.get("11").add(Authorities.READ);
-        repository.get("11").add(Authorities.WRITE);
-        repository.get("11").add(Authorities.DELETE);
+        repository.put(new User("Mihail", "My_PasSwOrd"), List.of(Authorities.values()));
+        repository.put(new User("Sergey", "My_PasSwOrd"), List.of(Authorities.DELETE,Authorities.READ));
     }
 
-    public List<Authorities> getUserAuthorities(String user, String password) {
-        return repository.get(user + password);
+    public List<Authorities> getUserAuthorities(User user) {
+        return repository.get(user);
     }
 }
